@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>庄数计算工具</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 30px; }
+    input { margin: 5px; padding: 5px; }
+    .output { margin-top: 20px; font-size: 18px; font-weight: bold; }
+    .preview { margin-top: 20px; border: 1px solid #ddd; padding: 20px; display: inline-block; }
+    img { max-width: 200px; display: block; margin: 10px auto; }
+  </style>
+</head>
+<body>
+  <h1>📦 庄数计算工具</h1>
+
+  <div>
+    <label>每pcs重量(g)：<input type="number" id="gramPerPcs" value="10"></label><br>
+    <label>每盒pcs數：<input type="number" id="pcsPerBox" value="20"></label><br>
+    <label>每箱盒數：<input type="number" id="boxPerCase" value="12"></label><br>
+    <label>總箱數：<input type="number" id="totalCases" value="5"></label><br>
+    <label>條碼號碼：<input type="text" id="barcodeInput" value="123456789012" oninput="updateBarcode()"></label><br>
+    <button onclick="calc()">計算</button>
+  </div>
+
+  <div class="output" id="formula"></div>
+
+  <div class="preview" id="preview">
+    <h3>成品圖預覽</h3>
+    <img id="productImg" src="https://via.placeholder.com/200x150.png?text=商品圖" alt="商品圖片">
+    <img id="barcodeImg" src="https://barcode.tec-it.com/barcode.ashx?data=123456789012" alt="條碼">
+    <div id="resultText"></div>
+  </div>
+
+  <script>
+    function calc() {
+      const gramPerPcs = parseInt(document.getElementById('gramPerPcs').value)
+      const pcsPerBox = parseInt(document.getElementById('pcsPerBox').value)
+      const boxPerCase = parseInt(document.getElementById('boxPerCase').value)
+      const totalCases = parseInt(document.getElementById('totalCases').value)
+
+      const totalPcs = pcsPerBox * boxPerCase * totalCases
+      const totalGram = totalPcs * gramPerPcs
+
+      const formula = `${gramPerPcs}g x ${pcsPerBox}pcs x ${boxPerCase}box x ${totalCases}case = ${totalGram}g (${totalPcs}pcs)`
+
+      document.getElementById('formula').innerText = formula
+      document.getElementById('resultText').innerText = formula
+    }
+
+    function updateBarcode() {
+      const code = document.getElementById('barcodeInput').value.trim()
+      const img = document.getElementById('barcodeImg')
+      if (code) {
+        img.src = `https://barcode.tec-it.com/barcode.ashx?data=${encodeURIComponent(code)}`
+      }
+    }
+  </script>
+</body>
+</html>
